@@ -21,8 +21,7 @@ namespace AgenceVoyage.Models
         
         [ForeignKey("Compte")]
         public int Id_compte { get; set; }
-        public Compte Compte { get; set; }
-        //public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        
     }
 
 }

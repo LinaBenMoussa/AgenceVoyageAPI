@@ -19,7 +19,18 @@ namespace AgenceVoyage.Controllers
         {
             _context = context;
         }
+        [HttpGet("hotel/{id}")]
+        public async Task<ActionResult<IEnumerable<Photo>>> GetAllPhotosByHotelId(int id)
+        {
+            var photos = await _context.Photos.Where(p => p.Id_hotel == id).ToListAsync();
 
+            if (photos == null || photos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return photos;
+        }
         // GET: api/Photos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
@@ -98,10 +109,11 @@ namespace AgenceVoyage.Controllers
 
             return NoContent();
         }
-
+        
         private bool PhotoExists(int id)
         {
             return _context.Photos.Any(e => e.Id_photo == id);
         }
+        
     }
 }

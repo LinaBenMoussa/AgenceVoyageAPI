@@ -19,6 +19,20 @@ namespace AgenceVoyage.Controllers
         {
             _context = context;
         }
+        [HttpGet("ByHotel/{idHotel}")]
+        public async Task<ActionResult<IEnumerable<Chambre>>> GetChambresByIdHotel(int idHotel)
+        {
+            var chambres = await _context.Chambres
+                .Where(c => c.Id_hotel == idHotel)
+                .ToListAsync();
+
+            if (chambres == null || chambres.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return chambres;
+        }
 
         // GET: api/Chambres
         [HttpGet]

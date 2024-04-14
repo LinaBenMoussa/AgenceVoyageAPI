@@ -9,5 +9,8 @@ namespace AgenceVoyage.Models
         [Required]
         public string? nom { get; set; }
 
+        public string? img { get; set; }
+
+
     }
 }

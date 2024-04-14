@@ -4,6 +4,7 @@ using AgenceVoyage.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgenceVoyage.Migrations
 {
     [DbContext(typeof(ClientDbContext))]
-    partial class ClientDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240414111305_mig7")]
+    partial class mig7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,6 @@ namespace AgenceVoyage.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_chambre"));
 
-                    b.Property<int?>("HotelId_hotel")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_hotel")
                         .HasColumnType("int");
 
@@ -42,21 +42,12 @@ namespace AgenceVoyage.Migrations
                     b.Property<float>("Prix")
                         .HasColumnType("real");
 
-                    b.Property<string>("img")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("nom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("surface")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("nom")
+                        .HasColumnType("int");
 
                     b.HasKey("Id_chambre");
 
-                    b.HasIndex("HotelId_hotel");
+                    b.HasIndex("Id_hotel");
 
                     b.ToTable("Chambres");
                 });
@@ -88,6 +79,8 @@ namespace AgenceVoyage.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id_client");
+
+                    b.HasIndex("Id_compte");
 
                     b.ToTable("Clients");
                 });
@@ -225,9 +218,24 @@ namespace AgenceVoyage.Migrations
 
             modelBuilder.Entity("AgenceVoyage.Models.Chambre", b =>
                 {
-                    b.HasOne("AgenceVoyage.Models.Hotel", null)
+                    b.HasOne("AgenceVoyage.Models.Hotel", "Hotel")
                         .WithMany("Chambres")
-                        .HasForeignKey("HotelId_hotel");
+                        .HasForeignKey("Id_hotel")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("AgenceVoyage.Models.Client", b =>
+                {
+                    b.HasOne("AgenceVoyage.Models.Compte", "Compte")
+                        .WithMany()
+                        .HasForeignKey("Id_compte")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Compte");
                 });
 
             modelBuilder.Entity("AgenceVoyage.Models.Photo", b =>

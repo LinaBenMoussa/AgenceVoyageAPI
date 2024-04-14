@@ -17,6 +17,7 @@ namespace AgenceVoyage.Models
         public String? Localisation { get; set; }
         [ForeignKey("Destination")]
         public int Id_destination { get; set; }
+        public String? srcMaps { get; set; }
         public ICollection<Photo> Photos { get; set; } = new List<Photo>(); 
         public ICollection<Chambre> Chambres { get; set; } = new List<Chambre>();
         public float Prix { get; set; }
