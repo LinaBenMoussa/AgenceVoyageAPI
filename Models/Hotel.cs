@@ -19,5 +19,6 @@ namespace AgenceVoyage.Models
         public int Id_destination { get; set; }
         public ICollection<Photo> Photos { get; set; } = new List<Photo>(); 
         public ICollection<Chambre> Chambres { get; set; } = new List<Chambre>();
+        public float Prix { get; set; }
     }
 }

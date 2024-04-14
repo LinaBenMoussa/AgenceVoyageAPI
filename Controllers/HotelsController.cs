@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
+using AgenceVoyage.DtoModels;
 
 namespace AgenceVoyage.Controllers
 {
@@ -39,6 +40,17 @@ namespace AgenceVoyage.Controllers
             }
 
             return hotel;
+        }
+
+        // POST: api/Hotels/search
+        [HttpPost("search")]
+        public async Task<ActionResult<List<Hotel>>> PostSearchHotels(FilterSearch filter)
+        {
+
+            return await _context.Hotels
+                 .Where(h => h.Id_destination == filter.Id_destination & h.Prix >= filter.MinPrice & h.Prix <= filter.MaxPrice)
+                 .ToListAsync();
+
         }
 
         // PUT: api/Hotels/5
