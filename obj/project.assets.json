@@ -9333,11 +9333,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\AgenceVoyage.csproj",
+      "projectUniqueName": "D:\\asp.net_workspace\\agenceVoyage\\AgenceVoyage.csproj",
       "projectName": "AgenceVoyage",
-      "projectPath": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\AgenceVoyage.csproj",
+      "projectPath": "D:\\asp.net_workspace\\agenceVoyage\\AgenceVoyage.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\obj\\",
+      "outputPath": "D:\\asp.net_workspace\\agenceVoyage\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",

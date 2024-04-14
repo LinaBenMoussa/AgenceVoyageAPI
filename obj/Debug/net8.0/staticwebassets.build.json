@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2pyYuXIM8BJZC/NgfM6t0dhluBhvksK9giRthLgJjqw=",
+  "Hash": "XMcj1P0fCneL2C7Zw9hBFkTbyqDnuSvrmECkTIilUJM=",
   "Source": "AgenceVoyage",
   "BasePath": "_content/AgenceVoyage",
   "Mode": "Default",
@@ -47,10 +47,10 @@
       "OriginalItemSpec": "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\8.0.2\\staticwebassets\\QuickGrid.razor.js"
     },
     {
-      "Identity": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\AgenceVoyage.styles.css",
+      "Identity": "D:\\asp.net_workspace\\agenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\AgenceVoyage.styles.css",
       "SourceId": "AgenceVoyage",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "D:\\asp.net_workspace\\agenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/AgenceVoyage",
       "RelativePath": "AgenceVoyage.styles.css",
       "AssetKind": "All",
@@ -63,7 +63,7 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Lenovo\\Downloads\\wetransfer_agencevoyage_2024-04-03_1154\\AgenceVoyage\\AgenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\AgenceVoyage.styles.css"
+      "OriginalItemSpec": "D:\\asp.net_workspace\\agenceVoyage\\obj\\Debug\\net8.0\\scopedcss\\bundle\\AgenceVoyage.styles.css"
     }
   ]
 }
