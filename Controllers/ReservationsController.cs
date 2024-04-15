@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
+using AgenceVoyage.DtoModels;
+using System.Net.Sockets;
 
 namespace AgenceVoyage.Controllers
 {
@@ -24,7 +26,7 @@ namespace AgenceVoyage.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
-            return await _context.Reservations.ToListAsync();
+            return await _context.Reservations.Include(r=>r.Client).ToListAsync();
         }
 
         // GET: api/Reservations/5
@@ -75,8 +77,16 @@ namespace AgenceVoyage.Controllers
         // POST: api/Reservations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<ReservationDto>> PostReservation(ReservationDto reservationDto)
         {
+            
+            var reservation = new Reservation(){
+                Id_client = reservationDto.Id_client,
+                DateDebut = reservationDto.DateDebut,
+                DateFin = reservationDto.DateFin,
+                Id_chambre = reservationDto.Id_chambre
+            };
+
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
