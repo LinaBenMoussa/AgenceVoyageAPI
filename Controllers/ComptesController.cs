@@ -103,5 +103,65 @@ namespace AgenceVoyage.Controllers
         {
             return _context.Comptes.Any(e => e.Id_compte == id);
         }
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] Compte loginModel)
+        {
+            var user = _context.Comptes.SingleOrDefault(x => x.Email == loginModel.Email && x.MotDePasse == loginModel.MotDePasse);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Email ou mot de passe incorrect." });
+            }
+
+            // Générez votre token ici (utilisez JWT ou tout autre mécanisme d'authentification)
+            //string token = generatetoken(user.id_compte);
+
+            return Ok();
+        }
+        [HttpPost("registerCompte")]
+        public IActionResult RegisterCompte([FromBody] Compte registerModel)
+        {
+            // Vérifiez si l'email est déjà utilisé
+            if (_context.Comptes.Any(x => x.Email == registerModel.Email))
+            {
+                return BadRequest(new { message = "Cet email est déjà utilisé." });
+            }
+
+            // Créez un nouveau compte
+            var compte = new Compte
+            {
+                Email = registerModel.Email,
+                MotDePasse = registerModel.MotDePasse,
+                role = registerModel.role, 
+                Token = registerModel.Token,
+            };
+           
+
+            _context.Comptes.Add(compte);
+            _context.SaveChanges();
+          
+
+            return Ok(new { message = "Inscription réussie." });
+        }
+
+        [HttpPost("registerClient")]
+        public IActionResult RegisterCompte([FromBody] Client clientModel)
+        {
+            
+            var client = new Client
+            {
+                Id_compte = clientModel.Id_compte,
+                Name = clientModel.Name,
+                Prenom = clientModel.Prenom,
+                Telephone = clientModel.Telephone,
+                DateNaissance = clientModel.DateNaissance
+            };
+            _context.Clients.Add(client);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Inscription réussie." });
+        }
+
+
     }
 }

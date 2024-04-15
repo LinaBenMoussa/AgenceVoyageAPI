@@ -11,5 +11,10 @@ namespace AgenceVoyage.Models
         public string? Email { get; set; }
         [Required]
         public string? MotDePasse { get; set; }
+        public int role { get; set; }
+        [Required]
+        public string Token { get; set; }
+
     }
+
 }

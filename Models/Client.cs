@@ -21,7 +21,9 @@ namespace AgenceVoyage.Models
         
         [ForeignKey("Compte")]
         public int Id_compte { get; set; }
-        
+       
+
+
     }
 
 }
