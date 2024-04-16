@@ -10,13 +10,9 @@ namespace AgenceVoyage.Models
     {
         [Key]
         public int Id_client { get; set; }
-        [Required]
         public string? Name { get; set; }
-        [Required]
         public string? Prenom { get; set; }
-        [Required]
         public int? Telephone { get; set; }
-        [Required]
         public DateTime DateNaissance { get; set; }
         
         [ForeignKey("Compte")]

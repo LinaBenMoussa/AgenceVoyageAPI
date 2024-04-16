@@ -116,7 +116,7 @@ namespace AgenceVoyage.Controllers
             // Générez votre token ici (utilisez JWT ou tout autre mécanisme d'authentification)
             //string token = generatetoken(user.id_compte);
 
-            return Ok();
+            return Ok(user);
         }
         [HttpPost("registerCompte")]
         public IActionResult RegisterCompte([FromBody] Compte registerModel)
