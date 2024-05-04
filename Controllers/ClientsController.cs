@@ -103,6 +103,21 @@ namespace AgenceVoyage.Controllers
         {
             return _context.Clients.Any(e => e.Id_client == id);
         }
+        // GET: api/Clients/GetClientByIdCompte/5
+        [HttpGet("GetClientByIdCompte/{idCompte}")]
+        public async Task<ActionResult<Client>> GetClientByIdCompte(int idCompte)
+        {
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id_compte == idCompte);
+
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            return client;
+        }
+
 
     }
+
 }
