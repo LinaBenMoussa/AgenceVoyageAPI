@@ -132,21 +132,22 @@ namespace AgenceVoyage.Controllers
             {
                 Email = registerModel.Email,
                 MotDePasse = registerModel.MotDePasse,
-                role = registerModel.role, 
+                role = registerModel.role,
                 Token = registerModel.Token,
             };
-           
 
             _context.Comptes.Add(compte);
             _context.SaveChanges();
-          
 
-            return Ok(new { message = "Inscription réussie." });
+            // Retournez le compte créé dans la réponse
+            return Ok(new { message = "Inscription réussie.", id_compte = compte.Id_compte });
         }
 
+
         [HttpPost("registerClient")]
-        public IActionResult RegisterCompte([FromBody] Client clientModel)
+        public IActionResult RegisterClient([FromBody] Client clientModel)
         {
+            
             
             var client = new Client
             {
