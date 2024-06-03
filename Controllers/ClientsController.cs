@@ -99,10 +99,17 @@ namespace AgenceVoyage.Controllers
             return NoContent();
         }
 
+        // GET: api/Clients/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalClients()
+        {
+            var totalClients = await _context.Clients.CountAsync();
+            return totalClients;
+        }
+
         private bool ClientExists(int id)
         {
             return _context.Clients.Any(e => e.Id_client == id);
         }
-
     }
 }

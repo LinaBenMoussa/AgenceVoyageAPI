@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
 using AgenceVoyage.DtoModels;
-using System.Net.Sockets;
 
 namespace AgenceVoyage.Controllers
 {
@@ -26,7 +23,7 @@ namespace AgenceVoyage.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
-            return await _context.Reservations.Include(r=>r.Client).ToListAsync();
+            return await _context.Reservations.Include(r => r.Client).ToListAsync();
         }
 
         // GET: api/Reservations/5
@@ -79,8 +76,8 @@ namespace AgenceVoyage.Controllers
         [HttpPost]
         public async Task<ActionResult<ReservationDto>> PostReservation(ReservationDto reservationDto)
         {
-            
-            var reservation = new Reservation(){
+            var reservation = new Reservation
+            {
                 Id_client = reservationDto.Id_client,
                 DateDebut = reservationDto.DateDebut,
                 DateFin = reservationDto.DateFin,
@@ -107,6 +104,14 @@ namespace AgenceVoyage.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Reservations/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalReservations()
+        {
+            var totalReservations = await _context.Reservations.CountAsync();
+            return totalReservations;
         }
 
         private bool ReservationExists(int id)

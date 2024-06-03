@@ -1,7 +1,9 @@
-﻿using AgenceVoyage.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AgenceVoyage.Models;
 
 namespace AgenceVoyage.Controllers
 {
@@ -91,6 +93,14 @@ namespace AgenceVoyage.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Destinations/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalDestinations()
+        {
+            var totalDestinations = await _context.Destination.CountAsync();
+            return totalDestinations;
         }
 
         private bool DestinationExists(int id)
