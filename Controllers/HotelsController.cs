@@ -50,7 +50,6 @@ namespace AgenceVoyage.Controllers
             {
                 if (filter.MinPrice != 0 || filter.MaxPrice != 0)
                 {
-                    // User has entered destination and price
                     return await _context.Hotels
                         .Where(h => h.Id_destination == filter.Id_destination
                                  && h.Prix >= filter.MinPrice

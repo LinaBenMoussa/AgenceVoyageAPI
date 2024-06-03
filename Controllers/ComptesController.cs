@@ -106,7 +106,7 @@ namespace AgenceVoyage.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] Compte loginModel)
         {
-            var user = _context.Comptes.SingleOrDefault(x => x.Email == loginModel.Email && x.MotDePasse == loginModel.MotDePasse);
+            var user = _context.Comptes.FirstOrDefault(x => x.Email == loginModel.Email && x.MotDePasse == loginModel.MotDePasse);
 
             if (user == null)
             {
@@ -122,7 +122,7 @@ namespace AgenceVoyage.Controllers
         public IActionResult RegisterCompte([FromBody] Compte registerModel)
         {
             // Vérifiez si l'email est déjà utilisé
-            if (_context.Comptes.Any(x => x.Email == registerModel.Email))
+            if (_context.Comptes.Any(x => x.Email.Trim() == registerModel.Email.Trim()))
             {
                 return BadRequest(new { message = "Cet email est déjà utilisé." });
             }
@@ -132,21 +132,22 @@ namespace AgenceVoyage.Controllers
             {
                 Email = registerModel.Email,
                 MotDePasse = registerModel.MotDePasse,
-                role = registerModel.role, 
+                role = registerModel.role,
                 Token = registerModel.Token,
             };
-           
 
             _context.Comptes.Add(compte);
             _context.SaveChanges();
-          
 
-            return Ok(new { message = "Inscription réussie." });
+            // Retournez le compte créé dans la réponse
+            return Ok(new { message = "Inscription réussie.", id_compte = compte.Id_compte });
         }
 
+
         [HttpPost("registerClient")]
-        public IActionResult RegisterCompte([FromBody] Client clientModel)
+        public IActionResult RegisterClient([FromBody] Client clientModel)
         {
+            
             
             var client = new Client
             {
