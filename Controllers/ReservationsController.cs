@@ -92,6 +92,20 @@ namespace AgenceVoyage.Controllers
 
             return CreatedAtAction("GetReservation", new { id = reservation.Id_reservation }, reservation);
         }
+        [HttpGet("client/{userId}")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsByUserId(int userId)
+        {
+            var reservations = await _context.Reservations
+                                             .Where(r => r.Id_client == userId)
+                                             .ToListAsync();
+
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+
+            return reservations;
+        }
 
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]

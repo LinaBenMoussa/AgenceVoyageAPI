@@ -106,7 +106,7 @@ namespace AgenceVoyage.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] Compte loginModel)
         {
-            var user = _context.Comptes.SingleOrDefault(x => x.Email == loginModel.Email && x.MotDePasse == loginModel.MotDePasse);
+            var user = _context.Comptes.FirstOrDefault(x => x.Email == loginModel.Email && x.MotDePasse == loginModel.MotDePasse);
 
             if (user == null)
             {
@@ -122,7 +122,7 @@ namespace AgenceVoyage.Controllers
         public IActionResult RegisterCompte([FromBody] Compte registerModel)
         {
             // Vérifiez si l'email est déjà utilisé
-            if (_context.Comptes.Any(x => x.Email == registerModel.Email))
+            if (_context.Comptes.Any(x => x.Email.Trim() == registerModel.Email.Trim()))
             {
                 return BadRequest(new { message = "Cet email est déjà utilisé." });
             }

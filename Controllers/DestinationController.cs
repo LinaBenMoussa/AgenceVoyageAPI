@@ -97,5 +97,20 @@ namespace AgenceVoyage.Controllers
         {
             return _context.Destination.Any(e => e.Id_destination == id);
         }
+
+        [HttpGet("SearchByNom")]
+        public async Task<ActionResult<IEnumerable<Destination>>> SearchByNom(string nom)
+        {
+            var destinations = await _context.Destination
+                .Where(d => d.nom.ToLower().Contains(nom.ToLower()))
+                .ToListAsync();
+
+            if (destinations == null || destinations.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return destinations;
+        }
     }
 }
