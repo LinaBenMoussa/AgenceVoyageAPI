@@ -16,6 +16,7 @@ namespace AgenceVoyage.Models
 
         [ForeignKey("Hotel")]
         public int Id_hotel { get; set; }
+        public Hotel Hotel { get; set; }
         [Required]
         public float Prix { get; set; }
 

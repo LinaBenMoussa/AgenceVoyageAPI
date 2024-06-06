@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
+using AgenceVoyage.DtoModels;
 
 namespace AgenceVoyage.Controllers
 {
@@ -121,6 +122,19 @@ namespace AgenceVoyage.Controllers
         {
             var totalChambres = await _context.Chambres.CountAsync();
             return totalChambres;
+        }
+        [HttpGet("rooms-per-hotel")]
+        public async Task<ActionResult<IEnumerable<RoomsPerHotelDto>>> GetRoomsPerHotel()
+        {
+            var roomsPerHotel = await _context.Hotels
+                .Select(h => new RoomsPerHotelDto
+                {
+                    HotelName = h.nom,
+                    RoomCount = h.Chambres.Count()
+                })
+                .ToListAsync();
+
+            return Ok(roomsPerHotel);
         }
 
         private bool ChambreExists(int id)
