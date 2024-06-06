@@ -106,6 +106,27 @@ namespace AgenceVoyage.Controllers
 
             return reservations;
         }
+        [HttpGet("check-availability")]
+        public async Task<ActionResult<bool>> CheckAvailability(int chambreId, DateTime startDate, DateTime endDate)
+        {
+            var overlappingReservations = await _context.Reservations
+                .Where(r => r.Id_chambre == chambreId
+                &&
+                            //((r.DateDebut>=startDate && r.DateDebut<=endDate) || (r.DateFin<=endDate && r.DateFin>=endDate))
+
+                            ((r.DateDebut <= startDate && r.DateFin >= startDate) ||
+                             (r.DateDebut <= endDate && r.DateFin >= endDate) ||
+                             (r.DateDebut >= startDate && r.DateFin <= endDate)))
+                .ToListAsync();
+
+            if (overlappingReservations.Any())
+            {
+                return Ok(false); // La chambre est déjà réservée pour cette période
+            }
+
+            return Ok(true); // La chambre est disponible pour cette période
+        }
+
 
         // DELETE: api/Reservations/5
         [HttpDelete("{id}")]
