@@ -31,7 +31,7 @@ namespace AgenceVoyage.Controllers
             return await _context.Reservations
                                  .Include(r => r.Client)
                                  .Include(r => r.Chambre)
-                                  .ThenInclude(c => c.Hotel)
+                                 
                                  .ToListAsync();
         }
         // GET: api/Reservations/5
