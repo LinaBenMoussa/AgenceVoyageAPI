@@ -109,7 +109,7 @@ namespace AgenceVoyage.Controllers
 
             return NoContent();
         }
-        
+
         private bool PhotoExists(int id)
         {
             return _context.Photos.Any(e => e.Id_photo == id);
@@ -122,12 +122,7 @@ namespace AgenceVoyage.Controllers
                 return BadRequest("No file uploaded.");
             }
 
-            var folderPath = Path.Combine("wwwroot", "photos");
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
+            var folderPath = @"E:\angularWorkspace\Angular-Project\src\assets\images\hotels";
             var filePath = Path.Combine(folderPath, file.FileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
@@ -137,7 +132,7 @@ namespace AgenceVoyage.Controllers
 
             var photo = new Photo
             {
-                Url = Path.Combine("photos", file.FileName),
+                Url = Path.Combine(file.FileName),
                 Id_hotel = hotelId
             };
 
@@ -146,7 +141,5 @@ namespace AgenceVoyage.Controllers
 
             return CreatedAtAction("GetPhoto", new { id = photo.Id_photo }, photo);
         }
-
-
     }
 }
