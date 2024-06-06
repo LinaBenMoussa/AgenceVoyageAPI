@@ -27,7 +27,7 @@ namespace AgenceVoyage.Controllers
         {
             return await _context.Hotels.ToListAsync();
         }
-        
+
         // GET: api/Hotels/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Hotel>> GetHotel(int id)
@@ -51,30 +51,31 @@ namespace AgenceVoyage.Controllers
                 if (filter.MinPrice != 0 || filter.MaxPrice != 0)
                 {
                     return await _context.Hotels
-                .Where(h => h.Id_destination == filter.Id_destination & h.Prix >= filter.MinPrice & (h.Prix <= filter.MaxPrice || filter.MaxPrice==0))
-                .ToListAsync();
+                        .Where(h => h.Id_destination == filter.Id_destination
+                                 && h.Prix >= filter.MinPrice
+                                 && (h.Prix <= filter.MaxPrice || filter.MaxPrice == 0))
+                        .ToListAsync();
                 }
                 else
                 {
-                    //l'utilisateur a entré seulement la destination
+                    // User has entered only destination
                     return await _context.Hotels
-                .Where(h => h.Id_destination == filter.Id_destination)
-                .ToListAsync();
+                        .Where(h => h.Id_destination == filter.Id_destination)
+                        .ToListAsync();
                 }
             }
-            else if(filter.Id_destination == 0 && (filter.MinPrice !=0 || filter.MaxPrice != 0))
+            else if (filter.Id_destination == 0 && (filter.MinPrice != 0 || filter.MaxPrice != 0))
             {
-                //l'utilisateur a entré seulement le prix
+                // User has entered only price
                 return await _context.Hotels
-           .Where(h => h.Prix >= filter.MinPrice & (h.Prix <= filter.MaxPrice || filter.MaxPrice == 0))
-           .ToListAsync();
+                    .Where(h => h.Prix >= filter.MinPrice
+                             && (h.Prix <= filter.MaxPrice || filter.MaxPrice == 0))
+                    .ToListAsync();
             }
             else
             {
                 return await _context.Hotels.ToListAsync();
             }
-           
-
         }
 
         // PUT: api/Hotels/5
@@ -133,6 +134,14 @@ namespace AgenceVoyage.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Hotels/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalHotels()
+        {
+            var totalHotels = await _context.Hotels.CountAsync();
+            return totalHotels;
         }
 
         private bool HotelExists(int id)

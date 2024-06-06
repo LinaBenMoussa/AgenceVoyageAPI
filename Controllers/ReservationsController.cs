@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
 using AgenceVoyage.DtoModels;
-using System.Net.Sockets;
 
 namespace AgenceVoyage.Controllers
 {
@@ -26,9 +23,17 @@ namespace AgenceVoyage.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
-            return await _context.Reservations.Include(r=>r.Client).ToListAsync();
+            return await _context.Reservations.Include(r => r.Client).ToListAsync();
         }
-
+        [HttpGet("liste")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GettReservations()
+        {
+            return await _context.Reservations
+                                 .Include(r => r.Client)
+                                 .Include(r => r.Chambre)
+                                 
+                                 .ToListAsync();
+        }
         // GET: api/Reservations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservation>> GetReservation(int id)
@@ -79,8 +84,8 @@ namespace AgenceVoyage.Controllers
         [HttpPost]
         public async Task<ActionResult<ReservationDto>> PostReservation(ReservationDto reservationDto)
         {
-            
-            var reservation = new Reservation(){
+            var reservation = new Reservation
+            {
                 Id_client = reservationDto.Id_client,
                 DateDebut = reservationDto.DateDebut,
                 DateFin = reservationDto.DateFin,
@@ -144,6 +149,63 @@ namespace AgenceVoyage.Controllers
             return NoContent();
         }
 
+        // GET: api/Reservations/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalReservations()
+        {
+            var totalReservations = await _context.Reservations.CountAsync();
+            return totalReservations;
+        }
+
+        // GET: api/Reservations/hotels
+        [HttpGet("hotels")]
+        public async Task<ActionResult<IEnumerable<object>>> GetReservationsByHotel()
+        {
+            var reservations = await _context.Reservations
+                                             .GroupBy(r => r.Chambre.Id_hotel)
+                                             .Select(g => new {
+                                                 HotelId = g.Key,
+                                                 TotalReservations = g.Count()
+                                             })
+                                                           .ToListAsync();
+
+            var hotelsWithReservations = new List<object>();
+
+            foreach (var item in reservations)
+            {
+                var hotel = await _context.Hotels.FindAsync(item.HotelId);
+                hotelsWithReservations.Add(new
+                {
+                    Nom = hotel?.nom ?? "Unknown", // Replace with actual property name
+                    TotalReservations = item.TotalReservations
+                });
+            }
+
+            return hotelsWithReservations;
+        }
+
+        // GET: api/Reservations/hotel/5
+        [HttpGet("hotel/{hotelId}")]
+        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetReservationsByHotel(int hotelId)
+        {
+            var reservations = await _context.Reservations
+                                             .Where(r => r.Chambre.Id_hotel == hotelId)
+                                             .Select(r => new ReservationDto
+                                             {
+                                                 Id_client = r.Id_client,
+                                                 DateDebut = r.DateDebut,
+                                                 DateFin = r.DateFin,
+                                                 Id_chambre = r.Id_chambre
+                                             })
+                                             .ToListAsync();
+
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+
+            return reservations;
+        }
         private bool ReservationExists(int id)
         {
             return _context.Reservations.Any(e => e.Id_reservation == id);

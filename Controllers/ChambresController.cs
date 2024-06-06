@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgenceVoyage.Models;
+using AgenceVoyage.DtoModels;
 
 namespace AgenceVoyage.Controllers
 {
@@ -18,20 +19,6 @@ namespace AgenceVoyage.Controllers
         public ChambresController(ClientDbContext context)
         {
             _context = context;
-        }
-        [HttpGet("ByHotel/{idHotel}")]
-        public async Task<ActionResult<IEnumerable<Chambre>>> GetChambresByIdHotel(int idHotel)
-        {
-            var chambres = await _context.Chambres
-                .Where(c => c.Id_hotel == idHotel)
-                .ToListAsync();
-
-            if (chambres == null || chambres.Count == 0)
-            {
-                return NotFound();
-            }
-
-            return chambres;
         }
 
         // GET: api/Chambres
@@ -53,6 +40,22 @@ namespace AgenceVoyage.Controllers
             }
 
             return chambre;
+        }
+
+        // GET: api/Chambres/ByHotel/5
+        [HttpGet("ByHotel/{idHotel}")]
+        public async Task<ActionResult<IEnumerable<Chambre>>> GetChambresByIdHotel(int idHotel)
+        {
+            var chambres = await _context.Chambres
+                .Where(c => c.Id_hotel == idHotel)
+                .ToListAsync();
+
+            if (chambres == null || chambres.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return chambres;
         }
 
         // PUT: api/Chambres/5
@@ -111,6 +114,27 @@ namespace AgenceVoyage.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Chambres/total
+        [HttpGet("total")]
+        public async Task<ActionResult<int>> GetTotalChambres()
+        {
+            var totalChambres = await _context.Chambres.CountAsync();
+            return totalChambres;
+        }
+        [HttpGet("rooms-per-hotel")]
+        public async Task<ActionResult<IEnumerable<RoomsPerHotelDto>>> GetRoomsPerHotel()
+        {
+            var roomsPerHotel = await _context.Hotels
+                .Select(h => new RoomsPerHotelDto
+                {
+                    HotelName = h.nom,
+                    RoomCount = h.Chambres.Count()
+                })
+                .ToListAsync();
+
+            return Ok(roomsPerHotel);
         }
 
         private bool ChambreExists(int id)
