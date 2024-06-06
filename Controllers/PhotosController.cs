@@ -114,6 +114,39 @@ namespace AgenceVoyage.Controllers
         {
             return _context.Photos.Any(e => e.Id_photo == id);
         }
-        
+        [HttpPost("upload")]
+        public async Task<ActionResult<Photo>> UploadPhoto([FromForm] IFormFile file, [FromForm] int hotelId)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var folderPath = Path.Combine("wwwroot", "photos");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var filePath = Path.Combine(folderPath, file.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var photo = new Photo
+            {
+                Url = Path.Combine("photos", file.FileName),
+                Id_hotel = hotelId
+            };
+
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetPhoto", new { id = photo.Id_photo }, photo);
+        }
+
+
     }
 }
